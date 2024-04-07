@@ -40,4 +40,32 @@ public class BasketSplitterConstructorTest {
         //then
         assertThrows(IOException.class, () -> new BasketSplitter(invalidFilePath));
     }
+
+    @Test
+    @DisplayName("Methods of delivery mapping is populated correctly")
+    public void givenValidConfigurationFilePath_whenConstructorCalled_thenMethodsOfDeliveryMappingPopulatedCorrectly() throws IOException {
+        // given
+        basketSplitter = new BasketSplitter(validConfigFilePath);
+
+        // when
+        BidirectionalMap<String, Integer> methodsOfDeliveryMapping =
+                getPrivateFieldValue(basketSplitter, "methodsOfDeliveryMapping", BidirectionalMap.class);
+
+        // then
+        assertNotNull(methodsOfDeliveryMapping);
+        assertEquals(methodsOfDeliveryMapping.size(), 8);
+    }
+
+    private  <T> T getPrivateFieldValue(Object obj, String fieldName, Class<T> fieldType) {
+        try {
+            Class<?> clazz = obj.getClass();
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            Object value = field.get(obj);
+            return fieldType.cast(value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
