@@ -1,16 +1,19 @@
 package org.testtask;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.testtask.exception.ProductNotExistsException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class BasketSplitterTest {
@@ -75,5 +78,29 @@ class BasketSplitterTest {
         for (String key : result.keySet()) {
             assertEquals(expected.get(key), result.get(key));
         }
+    }
+
+    @Test
+    void givenItemsWithNonExistingItem_whenSplit_thenThrowProductNotExistsException() {
+        // given
+        List<String> items = List.of("Garlic - Peeled",
+                "Milk Shake",
+                "Cake - Miini Cheesecake Cherry",
+                "Cinnamon Bun");
+
+        // when and then
+        assertThrows(ProductNotExistsException.class, () -> basketSplitter.split(items));
+    }
+
+    @Test
+    void givenNoItems_whenSplit_thenReturnEmptyMap() throws Exception {
+        // given
+        List<String> items = new ArrayList<>();
+
+        // when
+        Map<String, List<String>> result = basketSplitter.split(items);
+
+        // then
+        assertTrue(result.isEmpty());
     }
 }
