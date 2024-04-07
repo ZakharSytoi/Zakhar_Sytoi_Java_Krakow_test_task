@@ -52,6 +52,15 @@ Zakhar_Sytoi_Java_Krakow is a Java library designed to efficiently split market 
        }    
       }
      ```
+## Build
+If in any case you have problems with downloading .jar from [here](https://drive.google.com/drive/folders/1rmsF3vxUdVtFrH8whKQ861Pw32qQ7FO8?usp=drive_link)
+You can obtain it performig following steps:
+1. Clone this repository.
+2. Execute the following command in project root directory (You need to have Maven installed):
+
+   `$ mvn package`
+3. Now You can find `Zakhar_Sytoi_Java_Krakow_test_task-1.0.jar` in `target` directory.
+4. Perform steps from [Usage](#usage).
 
 ## Tests
 1. Clone this repository.
