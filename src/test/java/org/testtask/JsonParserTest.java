@@ -1,5 +1,7 @@
 package org.testtask;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,41 @@ class JsonParserTest {
         assertConfigurationEquals(expected, result);
     }
 
+    @Test
+    @DisplayName("Parsing invalid file should throw IOException")
+    void givenInvalidFile_whenParseJsonConfiguration_throwIOException() {
+        // given
+        File file = JsonConfigurationFileProvider.getNotExistingConfigurationFile();
 
+        // when and then
+        Assertions.assertThrows(IOException.class,
+                // when
+                () -> jsonParser.parseJsonConfiguration(file));
+    }
+
+    @Test
+    @DisplayName("Parsing JSON configuration with invalid content should throw IOException")
+    void givenInvalidJson_whenParseJsonConfiguration_thenThrowJsonParseException() {
+        // given
+        File file = JsonConfigurationFileProvider.getInvalidJsonConfigurationFile();
+        // when and then
+        Assertions.assertThrows(JsonParseException.class,
+                //when
+                () -> jsonParser.parseJsonConfiguration(file));
+    }
+
+    @Test
+    @DisplayName("Parsing JSON configuration with inappropriate structure should throw IOException")
+    void givenInappropriateJson_whenParseJsonConfiguration_thenThrowMismatchedInputException() {
+
+        // given
+        File file = JsonConfigurationFileProvider.getInappropriateConfigurationFile();
+        // when and then
+        Assertions.assertThrows(MismatchedInputException.class,
+                //when
+                () -> jsonParser.parseJsonConfiguration(file));
+
+    }
 
     private Map<String, HashSet<String>> getExpectedConfiguration() {
         Map<String, HashSet<String>> expected = new HashMap<>();
